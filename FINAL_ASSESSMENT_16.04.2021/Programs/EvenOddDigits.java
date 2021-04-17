@@ -1,39 +1,36 @@
 package com.sumofevenodd;
 
-public class EvenOddDigits {
+import java.util.Scanner;
 
-	static int countEvenOdd(int n)
-	{
-		int even_count = 0;
-		int odd_count = 0;
-		while (n > 0)
-		{
-			int rem = n % 10;
-			if (rem % 2 == 0)
-				even_count++;
-			else
-				odd_count++;
-			n = n / 10;
-		}
-		System.out.println ( "Even count : " +
-								even_count);
-		System.out.println ( "Odd count : " +
-								odd_count);
-		if (even_count % 2 == 0 &&
-			odd_count % 2 != 0)
-			return 0;
-		else
-			return 0;
-	}
-
-		public static void main (String[] args)
-		{
-		int n;
-		n = 2335453;
-		int t = countEvenOdd(n);
-		if (t == 1)
-	        System.out.println ( "YES" );
-	    else
-	        System.out.println( "NO") ;
-		}
+public class EvenOddDigits 
+{
+    public static void main(String[] args) 
+    {
+        int n, sumE = 0, sumO = 0;
+        Scanner s = new Scanner(System.in);
+        
+        System.out.print("Enter the number of elements in array:");
+        n = s.nextInt();
+        
+        int[] a = new int[n];
+        
+        System.out.println("Enter the elements of the array:");
+        for(int i = 0; i < n; i++)
+        {
+            a[i] = s.nextInt();
+        }
+        for(int i = 0; i < n; i++)
+        {
+            if(a[i] % 2 == 0)
+            {
+                sumE = sumE + a[i];
+            }
+            else
+            {
+                sumO = sumO + a[i];
+            }
+        }
+        System.out.println("Sum of Even Numbers:"+sumE);
+        System.out.println("Sum of Odd Numbers:"+sumO);
+    }
 }
