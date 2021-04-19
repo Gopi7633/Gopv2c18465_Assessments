@@ -1,98 +1,66 @@
-package com.blurImage;
+package com.imageblur;
 
-//Java Program to Blur Image using Smoothing
-
-//Importing required packages
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
-//Main class
-public class BlurImage {
+public class Main {
 
-	// Main driver method
-	public static void main(String[] args)
-		throws IOException, InterruptedException
-	{
+Color c[];
 
-		Color color[];
+	Main() throws IOException, InterruptedException {
+		File f = new File("D:\\img.jpg");
+		BufferedImage im = ImageIO.read(f);
 
-		// Creating a File class object to
-		// read the image in the form of file from directory
-
-		// Directory path is passed as an argument
-		File fin = new File("Image.jpeg");
-
-		// Now object of BufferedImage class is created to
-		// convert file into into image form
-		BufferedImage input = ImageIO.read(fin);
-
-		// Again creating an object of BufferedImage to
-		// create output Image
-		BufferedImage output = new BufferedImage(
-			input.getWidth(), input.getHeight(),
-			BufferedImage.TYPE_INT_RGB);
-
-		// Setting diminsions for the image to be processed
+		BufferedImage bi = new BufferedImage(im.getWidth(), im.getHeight(), BufferedImage.TYPE_INT_RGB);
 		int i = 0;
-		int max = 400, rad = 10;
+		int max = 400, radius = 10;
 		int a1 = 0, r1 = 0, g1 = 0, b1 = 0;
-		color = new Color[max];
-
-		// Now this core section of code is responsible for
-		// blurring of an image
-
+		c = new Color[max];
 		int x = 1, y = 1, x1, y1, ex = 5, d = 0;
+		for (x = radius; x < im.getHeight() - radius; x++) {
+        for (y = radius; y < im.getWidth() - radius; y++) {
 
-		// Running nested for loops for each pixel
-		// and blurring it
-		for (x = rad; x < input.getHeight() - rad; x++) {
-			for (y = rad; y < input.getWidth() - rad; y++) {
-				for (x1 = x - rad; x1 < x + rad; x1++) {
-					for (y1 = y - rad; y1 < y + rad; y1++) {
-						color[i++] = new Color(
-							input.getRGB(y1, x1));
-					}
-				}
+            //20x20 matrix
+            for (x1 = x - radius; x1 < x + radius; x1++) {
+                for (y1 = y - radius; y1 < y + radius; y1++) {
+                    c[i++] = new Color(im.getRGB(y1, x1));
+                    //System.out.println(i);
+                }
+            }
+            i = 0;
 
-				// Smothing colors of image
-				i = 0;
-				for (d = 0; d < max; d++) {
-					a1 = a1 + color[d].getAlpha();
-				}
+            for (d = 0; d < max; d++) {
+                a1 = a1 + c[d].getAlpha();
+            }
+            a1 = a1 / (max);
 
-				a1 = a1 / (max);
-				for (d = 0; d < max; d++) {
-					r1 = r1 + color[d].getRed();
-				}
+            for (d = 0; d < max; d++) {
+                r1 = r1 + c[d].getRed();
+            }
+            r1 = r1 / (max);
 
-				r1 = r1 / (max);
-				for (d = 0; d < max; d++) {
-					g1 = g1 + color[d].getGreen();
-				}
+            for (d = 0; d < max; d++) {
+                g1 = g1 + c[d].getGreen();
+            }
+            g1 = g1 / (max);
 
-				g1 = g1 / (max);
-				for (d = 0; d < max; d++) {
-					b1 = b1 + color[d].getBlue();
-				}
+            for (d = 0; d < max; d++) {
+                b1 = b1 + c[d].getBlue();
+            }
+            b1 = b1 / (max);
+            int sum1 = (a1 << 24) + (r1 << 16) + (g1 << 8) + b1;
+            bi.setRGB(y, x, (int) (sum1));
 
-				b1 = b1 / (max);
-				int sum1 = (a1 << 24) + (r1 << 16)
-						+ (g1 << 8) + b1;
-				output.setRGB(y, x, (int)(sum1));
-			}
-		}
+        }
+    }
+    ImageIO.write(bi, "jpg", new File("D:\\img1.jpg"));
+}
 
-		// Writing the blurred image on the disc where
-		// directory is passed as an argument
-		ImageIO.write(
-			output, "jpeg",
-			new File("D:/test/BlurredImage.jpeg"));
-
-		// Message to be displayed in the console when
-		// program is succcessfully executed
-		System.out.println("Image blurred successfully !");
+public static void main(String[] args) throws IOException, InterruptedException {
+    	new Main();
 	}
 }
